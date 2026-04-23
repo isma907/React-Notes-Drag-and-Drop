@@ -12,7 +12,12 @@
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
+
+  --board-min-width: 1024px;
+  --board-min-height: 768px;
 }
+
+
 
 @media (prefers-color-scheme: dark) {
   :root {

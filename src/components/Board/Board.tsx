@@ -1,9 +1,10 @@
+import StickyNote from '../StickyNote/StickyNote'
 import './Board.css'
 const Board = () => {
     return (
-        <div>
-
-        </div>
+        <section className="board">
+            <StickyNote />
+        </section>
     )
 }
 

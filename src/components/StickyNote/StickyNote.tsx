@@ -1,9 +1,9 @@
 import './StickyNote.css'
 const StickyNote = () => {
     return (
-        <div>
-
-        </div>
+        <article className="sticky-note">
+            <textarea placeholder="Write your note here..." />
+        </article>
     )
 }
 
