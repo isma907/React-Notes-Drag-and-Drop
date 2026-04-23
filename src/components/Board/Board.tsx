@@ -17,8 +17,8 @@ const Board = () => {
     / Create a new note on doubleClicking an empty space on the board
      */
     const handleAddNote = (e: React.MouseEvent) => {
-        console.log("adding note")
         if (e.target !== e.currentTarget) return;
+        console.log("adding note")
         const rect = boardRef.current?.getBoundingClientRect()
         const x = e.clientX - (rect?.left || 0)
         const y = e.clientY - (rect?.top || 0);
