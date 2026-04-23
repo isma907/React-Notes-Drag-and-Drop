@@ -38,6 +38,7 @@ export function useResize(
     (e: React.PointerEvent) => {
       if (!resizing.current || !noteRef.current) return;
 
+      //Check with minHeight and minWidth to avoid resizing too small
       const width = Math.max(
         STICKY_NOTE_MIN_WIDTH,
         start.current.w + (e.clientX - start.current.x),
@@ -62,7 +63,6 @@ export function useResize(
     if (!note) return;
     const width = Math.round(rect.width);
     const height = Math.round(rect.height);
-
     if (note?.size?.width !== width || note?.size?.height !== height) {
       updateNote(id, {
         size: { width, height },

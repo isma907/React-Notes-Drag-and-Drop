@@ -3,7 +3,7 @@
 }
 
 .sticky-note-drag-handler {
-  height: var(--drag-handler-height);
+  height: var(--note-drag-handler-height);
   background-color: rgba(0, 0, 0, 0.5);
   cursor: grab;
 }
@@ -18,9 +18,9 @@
   color: var(--text);
   padding: 1rem;
   width: 100%;
-  height: calc(100% - var(--drag-handler-height));
+  height: calc(100% - var(--note-drag-handler-height));
   min-width: 100%;
-  min-height: calc(100% - var(--drag-handler-height));
+  min-height: calc(100% - var(--note-drag-handler-height));
   margin: 0;
   border: none;
   outline: none;
@@ -32,7 +32,7 @@
   box-sizing: border-box;
   overflow: auto;
   display: block;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: var(--note-text-shadow);
   font-size: var(--font-size-normal);
 }
 

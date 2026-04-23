@@ -3,14 +3,16 @@
   --board-min-width: 1024px;
   --board-min-height: 768px;
 
-  --drag-handler-height: 1.25rem;
-
   --modal-bg: #333;
   --modal-backdrop: rgba(0, 0, 0, 0.35);
   --modal-border-radius: 0.3rem;
   --modal-btn-bg: #fff;
 
   --font-size-normal: 1.2rem;
+
+  --note-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --note-resize-handler-bg: #ffffff;
+  --note-drag-handler-height: 1.25rem;
 
   --bg: #16171d;
   --shadow:

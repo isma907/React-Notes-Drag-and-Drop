@@ -7,7 +7,9 @@ interface BoardProviderProps {
 }
 
 export function BoardProvider({ children, trashRef }: BoardProviderProps) {
-  const [pendingDeleteNoteId, setPendingDeleteNoteId] = useState<string | null>(null);
+  const [pendingDeleteNoteId, setPendingDeleteNoteId] = useState<string | null>(
+    null,
+  );
 
   const openDeleteModal = (id: string) => {
     setPendingDeleteNoteId(id);
@@ -18,7 +20,14 @@ export function BoardProvider({ children, trashRef }: BoardProviderProps) {
   };
 
   return (
-    <BoardContext.Provider value={{ trashRef, pendingDeleteNoteId, openDeleteModal, closeDeleteModal }}>
+    <BoardContext.Provider
+      value={{
+        trashRef,
+        pendingDeleteNoteId,
+        openDeleteModal,
+        closeDeleteModal,
+      }}
+    >
       {children}
     </BoardContext.Provider>
   );
