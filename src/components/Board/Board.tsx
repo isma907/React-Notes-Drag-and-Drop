@@ -5,6 +5,7 @@ import { useNotesStore } from "../../store/useNotes";
 import { createStickyNote } from "../../utils/stickyNotes.utils";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { BoardProvider } from "../../context/BoardProvider";
+import DeleteNoteModal from "../DeleteNoteModal/DeleteNoteModal";
 
 const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -36,6 +37,7 @@ const Board = () => {
           <StickyNote key={id} id={id} zIndex={index + 1} />
         ))}
       </section>
+      <DeleteNoteModal />
     </BoardProvider>
   );
 };

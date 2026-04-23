@@ -1,5 +1,6 @@
 import { useRef, useCallback } from "react";
 import { useNotesStore } from "../store/useNotes";
+import { useBoardContext } from "../context/useBoardContext";
 
 export function useDrag(
   id: string,
@@ -8,8 +9,8 @@ export function useDrag(
 ) {
   const note = useNotesStore((s) => s.notes[id]);
   const updateNote = useNotesStore((s) => s.updateNote);
-  const removeNote = useNotesStore((s) => s.removeNote);
   const bringToFront = useNotesStore((s) => s.bringToFront);
+  const { openDeleteModal } = useBoardContext();
 
   const isDragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
@@ -64,21 +65,11 @@ export function useDrag(
         noteRect.bottom > trashRect.top;
 
       if (isOverTrash) {
-        const confirmed = window.confirm(
-          "Are you sure, you want to delete this note?",
-        );
-        if (confirmed) {
-          removeNote(note.id);
-          return;
-        } else {
-          // Restore to initial position if user cancel the action
-          if (noteRef.current) {
-            noteRef.current.style.left = `${initialPosition.current.x}px`;
-            noteRef.current.style.top = `${initialPosition.current.y}px`;
-          }
-          updateNote(id, { position: initialPosition.current });
-          return;
-        }
+        noteRef.current.style.left = `${initialPosition.current.x}px`;
+        noteRef.current.style.top = `${initialPosition.current.y}px`;
+        updateNote(id, { position: initialPosition.current });
+        openDeleteModal(note.id);
+        return;
       }
 
       // Normal drop - update position only if changed
@@ -94,7 +85,7 @@ export function useDrag(
         }
       }
     }
-  }, [id, note, updateNote, removeNote, trashRef, noteRef]);
+  }, [id, note, noteRef, openDeleteModal, trashRef, updateNote]);
 
   return {
     onStartDragNote,
