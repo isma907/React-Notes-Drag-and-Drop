@@ -14,7 +14,6 @@ export function useResize(
 
     const onStartResizeNote = useCallback((e: React.PointerEvent) => {
         if (!note) return;
-        console.log('start resizing')
         resizing.current = true;
         start.current = {
             x: e.clientX,
