@@ -7,7 +7,7 @@ const StickyNote = ({ id }: { id: string }) => {
     const note = useNotesStore((s) => s.notes[id]);
     const noteRef = useRef<HTMLDivElement>(null);
 
-    const { onPointerDown } = useDrag(id, noteRef);
+    const { onPointerDown, onPointerMove } = useDrag(id, noteRef);
 
     const updateNote = useNotesStore((s) => s.updateNote);
     const [noteValue, setNoteValue] = useState(note?.textContent ?? "");
@@ -25,7 +25,9 @@ const StickyNote = ({ id }: { id: string }) => {
         <article className="sticky-note"
             style={{ width: note.size?.width, height: note.size?.height, left: note.position.x, top: note.position.y, backgroundColor: note.backgroundColor }}
             ref={noteRef}
-            onPointerDown={onPointerDown}>
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+        >
             <div className="sticky-note-drag-handle"></div>
             <textarea className="sticky-note_text-content" placeholder="Write your note here..."
                 value={noteValue}
