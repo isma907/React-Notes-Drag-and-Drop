@@ -1,16 +1,19 @@
 import { useRef, useCallback } from "react";
 import { useNotesStore } from "../store/useNotes";
 
-export function useDrag(id: string, noteRef: React.RefObject<HTMLDivElement | null>) {
+export function useDrag(id: string, noteRef: React.RefObject<HTMLDivElement | null>, trashRef: React.RefObject<HTMLDivElement | null>) {
+    const note = useNotesStore((s) => s.notes[id]);
     const updateNote = useNotesStore((s) => s.updateNote);
+    const removeNote = useNotesStore((s) => s.removeNote);
 
     const isDragging = useRef(false);
     const offset = useRef({ x: 0, y: 0 });
     const position = useRef({ x: 0, y: 0 });
+    const initialPosition = useRef({ x: 0, y: 0 });
 
     const onStartDragNote = useCallback((e: React.PointerEvent) => {
-        const note = useNotesStore.getState().notes[id];
         if (!note) return;
+
         isDragging.current = true;
         offset.current = {
             x: e.clientX - note.position.x,
@@ -18,12 +21,14 @@ export function useDrag(id: string, noteRef: React.RefObject<HTMLDivElement | nu
         };
 
         position.current = { ...note.position };
+        initialPosition.current = { ...note.position };
 
         e.currentTarget.setPointerCapture(e.pointerId);
-    }, [id]);
+    }, [note]);
 
     const onDragNote = useCallback((e: React.PointerEvent) => {
         if (!isDragging.current || !noteRef.current) return;
+
         const x = e.clientX - offset.current.x;
         const y = e.clientY - offset.current.y;
         position.current = { x, y };
@@ -34,20 +39,37 @@ export function useDrag(id: string, noteRef: React.RefObject<HTMLDivElement | nu
     const onDropNote = useCallback(() => {
         if (!isDragging.current) return;
         isDragging.current = false;
+        if (!note) return;
+        if (trashRef.current && noteRef.current) {
+            const trashRect = trashRef.current.getBoundingClientRect();
+            const noteRect = noteRef.current.getBoundingClientRect();
 
-        const current = useNotesStore.getState().notes[id];
-        if (!current) return;
-        const hasChanged =
-            current.position.x !== position.current.x ||
-            current.position.y !== position.current.y;
+            // Check if we dropped the note into Trash FIRST
+            const isOverTrash =
+                noteRect.left < trashRect.right &&
+                noteRect.right > trashRect.left &&
+                noteRect.top < trashRect.bottom &&
+                noteRect.bottom > trashRect.top;
 
-        if (hasChanged) {
-            updateNote(id, {
-                position: position.current,
-            });
+            if (isOverTrash) {
+                removeNote(note.id);
+            }
+
+            // Normal drop - update position only if changed
+            else {
+                const hasChanged =
+                    note.position.x !== position.current.x ||
+                    note.position.y !== position.current.y;
+
+                if (hasChanged) {
+                    updateNote(id, {
+                        position: position.current,
+                    });
+                }
+            }
         }
 
-    }, [id, updateNote]);
+    }, [id, note, updateNote, removeNote, trashRef, noteRef]);
 
     return {
         onStartDragNote,
