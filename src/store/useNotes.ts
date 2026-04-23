@@ -5,7 +5,7 @@ import { create } from "zustand";
 type NotesState = {
     notes: Record<string, StickyNote>;
     addNote: (note: StickyNote) => void;
-    removeNote: (note: StickyNote) => void;
+    removeNote: (id: string) => void;
     updateNote: (id: string, updates: Partial<StickyNote>) => void;
 };
 
@@ -26,16 +26,14 @@ export const useNotesStore = create<NotesState>()(
                         false,
                         "[Note] addNote",
                     ),
-                removeNote: (note) =>
+                removeNote: (id) =>
                     set(
                         (state) => {
-                            const { [note.id]: _, ...rest } = state.notes;
-                            return {
-                                notes: rest,
-                            };
+                            const { [id]: _, ...rest } = state.notes;
+                            return { notes: rest };
                         },
                         false,
-                        "[Note] remove",
+                        "[Note] removeNote",
                     ),
                 updateNote: (id, updates) =>
                     set(
