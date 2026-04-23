@@ -34,8 +34,8 @@ const Board = () => {
           <FaRegTrashCan />
         </div>
 
-        {noteIds.map((id, index) => (
-          <StickyNote key={id} id={id} zIndex={index + 1} />
+        {noteIds.map((id) => (
+          <StickyNote key={id} id={id} />
         ))}
       </section>
       <DeleteNoteModal />

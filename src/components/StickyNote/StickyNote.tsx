@@ -5,8 +5,9 @@ import { useDrag } from "../../hooks/userDrag";
 import { useBoardContext } from "../../context/useBoardContext";
 import { useResize } from "../../hooks/useResize";
 
-const StickyNote = ({ id, zIndex }: { id: string; zIndex: number }) => {
+const StickyNote = ({ id }: { id: string }) => {
   const note = useNotesStore((s) => s.notes[id]);
+  const noteIndex = useNotesStore((s) => s.noteOrder.indexOf(id));
   const noteRef = useRef<HTMLDivElement>(null);
   const { trashRef } = useBoardContext();
 
@@ -44,7 +45,7 @@ const StickyNote = ({ id, zIndex }: { id: string; zIndex: number }) => {
         left: note.position.x,
         top: note.position.y,
         backgroundColor: note.backgroundColor,
-        zIndex,
+        zIndex: noteIndex + 1,
       }}
       ref={noteRef}
     >
