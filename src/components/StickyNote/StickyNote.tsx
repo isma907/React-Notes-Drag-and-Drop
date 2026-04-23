@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useNotesStore } from '../../store/useNotes';
 import './StickyNote.css'
 const StickyNote = ({ id }: { id: string }) => {
@@ -7,6 +7,8 @@ const StickyNote = ({ id }: { id: string }) => {
     const updateNote = useNotesStore((s) => s.updateNote);
     const [noteValue, setNoteValue] = useState(note?.textContent ?? "");
 
+
+    const noteRef = useRef<HTMLDivElement>(null);
     const handleUpdateText = useCallback(() => {
         const current = note?.textContent ?? "";
         //Update store only if there is a change in the content
@@ -16,7 +18,7 @@ const StickyNote = ({ id }: { id: string }) => {
     }, [id, noteValue, updateNote]);
 
     return (
-        <article className="sticky-note" style={{ width: note.size?.width, height: note.size?.height, left: note.position.x, top: note.position.y, backgroundColor: note.backgroundColor }}>
+        <article className="sticky-note" style={{ width: note.size?.width, height: note.size?.height, left: note.position.x, top: note.position.y, backgroundColor: note.backgroundColor }} ref={noteRef}>
             <div className="sticky-note-drag-handle"></div>
             <textarea className="sticky-note_text-content" placeholder="Write your note here..."
                 value={noteValue}
