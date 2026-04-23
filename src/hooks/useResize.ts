@@ -28,6 +28,23 @@ export function useResize(
     }, [note]);
 
 
+    const onResizeNote = useCallback((e: React.PointerEvent) => {
+        if (!resizing.current || !noteRef.current) return;
 
-    return { onStartResizeNote };
+        const width = Math.max(
+            STICKY_NOTE_MIN_WIDTH,
+            start.current.w + (e.clientX - start.current.x)
+        );
+        const height = Math.max(
+            STICKY_NOTE_MIN_HEIGHT,
+            start.current.h + (e.clientY - start.current.y)
+        );
+
+        noteRef.current.style.width = `${width}px`;
+        noteRef.current.style.height = `${height}px`;
+    }, [noteRef]);
+
+
+
+    return { onStartResizeNote, onResizeNote };
 }
