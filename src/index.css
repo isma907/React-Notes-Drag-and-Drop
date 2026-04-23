@@ -9,11 +9,14 @@
   --modal-btn-bg: #fff;
 
   --font-size-normal: 1.2rem;
+  --info-text-color: #aaa;
 
   --note-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   --note-resize-handler-bg: #ffffff;
   --note-drag-handler-bg: rgba(0, 0, 0, 0.5);
   --note-drag-handler-height: 1.25rem;
+
+  --trash-bg: #ff2225;
 
   --bg: #16171d;
   --shadow:

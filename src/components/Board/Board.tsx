@@ -33,6 +33,7 @@ const Board = () => {
         <div className="trash-item" ref={trashRef}>
           <FaRegTrashCan />
         </div>
+
         {noteIds.map((id, index) => (
           <StickyNote key={id} id={id} zIndex={index + 1} />
         ))}
