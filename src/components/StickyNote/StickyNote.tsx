@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { useNotesStore } from "../../store/useNotes";
 import "./StickyNote.css";
 import { useDrag } from "../../hooks/userDrag";
-import { useBoardContext } from "../../context/BoardContext";
+import { useBoardContext } from "../../context/useBoardContext";
 import { useResize } from "../../hooks/useResize";
 
 const StickyNote = ({ id, zIndex }: { id: string; zIndex: number }) => {
@@ -29,7 +29,7 @@ const StickyNote = ({ id, zIndex }: { id: string; zIndex: number }) => {
     if (noteValue !== current) {
       updateNote(id, { textContent: noteValue });
     }
-  }, [id, noteValue, updateNote]);
+  }, [id, note?.textContent, noteValue, updateNote]);
 
   if (!note) {
     return null;

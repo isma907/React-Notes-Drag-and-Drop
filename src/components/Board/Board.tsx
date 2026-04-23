@@ -4,7 +4,7 @@ import "./Board.css";
 import { useNotesStore } from "../../store/useNotes";
 import { createStickyNote } from "../../utils/stickyNotes.utils";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { BoardProvider } from "../../context/BoardContext";
+import { BoardProvider } from "../../context/BoardProvider";
 
 const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
