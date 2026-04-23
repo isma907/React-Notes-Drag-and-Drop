@@ -2,12 +2,15 @@ import { useCallback, useRef, useState } from 'react';
 import { useNotesStore } from '../../store/useNotes';
 import './StickyNote.css'
 import { useDrag } from '../../hooks/userDrag';
+import { useTrash } from '../../context/BoardContext';
+
 const StickyNote = ({ id }: { id: string }) => {
 
     const note = useNotesStore((s) => s.notes[id]);
     const noteRef = useRef<HTMLDivElement>(null);
+    const { trashRef } = useTrash();
 
-    const { onStartDragNote, onDragNote, onDropNote } = useDrag(id, noteRef);
+    const { onStartDragNote, onDragNote, onDropNote } = useDrag(id, noteRef, trashRef);
 
     const updateNote = useNotesStore((s) => s.updateNote);
     const [noteValue, setNoteValue] = useState(note?.textContent ?? "");
@@ -22,7 +25,15 @@ const StickyNote = ({ id }: { id: string }) => {
 
     return (
         <article className="sticky-note"
-            style={{ width: note.size?.width, height: note.size?.height, left: note.position.x, top: note.position.y, backgroundColor: note.backgroundColor }}
+            style={
+                {
+                    width: note.size?.width,
+                    height: note.size?.height,
+                    left: note.position.x,
+                    top: note.position.y,
+                    backgroundColor: note.backgroundColor
+                }
+            }
             ref={noteRef}
         >
             <div className="sticky-note-drag-handle" onPointerDown={onStartDragNote}

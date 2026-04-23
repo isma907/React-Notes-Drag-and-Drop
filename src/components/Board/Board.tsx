@@ -5,7 +5,7 @@ import { useNotesStore } from '../../store/useNotes'
 import { useShallow } from 'zustand/react/shallow'
 import { createStickyNote } from '../../utils/stickyNotes.utils'
 import { FaRegTrashCan } from "react-icons/fa6";
-import { BoardProvider } from '../../context/TrashContext';
+import { BoardProvider } from '../../context/BoardContext';
 
 
 const Board = () => {
