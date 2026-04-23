@@ -31,9 +31,27 @@ export function useDrag(id: string, noteRef: React.RefObject<HTMLDivElement | nu
         noteRef.current.style.top = `${y}px`;
     }, [noteRef]);
 
+    const onPointerUp = useCallback(() => {
+        if (!isDragging.current) return;
+        isDragging.current = false;
+
+        const current = useNotesStore.getState().notes[id];
+        if (!current) return;
+        const hasChanged =
+            current.position.x !== position.current.x ||
+            current.position.y !== position.current.y;
+
+        if (hasChanged) {
+            updateNote(id, {
+                position: position.current,
+            });
+        }
+
+    }, [id, updateNote]);
+
     return {
         onPointerDown,
-        onPointerMove
-
+        onPointerMove,
+        onPointerUp,
     };
 }
