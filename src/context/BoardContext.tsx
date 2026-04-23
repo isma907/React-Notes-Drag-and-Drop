@@ -14,10 +14,10 @@ export function BoardProvider({ children, trashRef }: { children: React.ReactNod
     );
 }
 
-export function useTrash() {
+export function useBoardContext() {
     const context = useContext(BoardContext);
     if (!context) {
-        throw new Error('useTrash must be used within a BoardProvider');
+        throw new Error('useBoardContext must be used within a BoardProvider');
     }
     return context;
 }

@@ -2,15 +2,17 @@ import { useCallback, useRef, useState } from 'react';
 import { useNotesStore } from '../../store/useNotes';
 import './StickyNote.css'
 import { useDrag } from '../../hooks/userDrag';
-import { useTrash } from '../../context/BoardContext';
+import { useBoardContext } from '../../context/BoardContext';
+import { useResize } from '../../hooks/useResize';
 
 const StickyNote = ({ id }: { id: string }) => {
 
     const note = useNotesStore((s) => s.notes[id]);
     const noteRef = useRef<HTMLDivElement>(null);
-    const { trashRef } = useTrash();
+    const { trashRef } = useBoardContext();
 
     const { onStartDragNote, onDragNote, onDropNote } = useDrag(id, noteRef, trashRef);
+    const { onStartResizeNote } = useResize(id, noteRef);
 
     const updateNote = useNotesStore((s) => s.updateNote);
     const [noteValue, setNoteValue] = useState(note?.textContent ?? "");
@@ -45,7 +47,9 @@ const StickyNote = ({ id }: { id: string }) => {
                 onBlur={handleUpdateText}
             />
 
-            <div className="sticky-note-resize-handler"></div>
+            <div className="sticky-note-resize-handler"
+                onPointerDown={onStartResizeNote}
+            ></div>
         </article>
     )
 }
