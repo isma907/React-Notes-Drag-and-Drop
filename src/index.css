@@ -12,6 +12,7 @@
 
   --note-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   --note-resize-handler-bg: #ffffff;
+  --note-drag-handler-bg: rgba(0, 0, 0, 0.5);
   --note-drag-handler-height: 1.25rem;
 
   --bg: #16171d;

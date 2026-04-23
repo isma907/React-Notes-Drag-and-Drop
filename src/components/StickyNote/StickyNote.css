@@ -4,7 +4,7 @@
 
 .sticky-note-drag-handler {
   height: var(--note-drag-handler-height);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--note-drag-handler-bg);
   cursor: grab;
 }
 
@@ -65,5 +65,5 @@
   height: 0;
   border-style: solid;
   border-width: 0 0 1rem 1rem;
-  border-color: transparent transparent #ffffff transparent;
+  border-color: transparent transparent var(--note-resize-handler-bg) transparent;
 }
