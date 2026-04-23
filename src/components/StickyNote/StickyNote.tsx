@@ -1,8 +1,12 @@
+import { useNotesStore } from '../../store/useNotes';
 import './StickyNote.css'
-const StickyNote = () => {
+const StickyNote = ({ id }: { id: string }) => {
+
+    const note = useNotesStore((s) => s.notes[id]);
+
     return (
-        <article className="sticky-note">
-            <textarea placeholder="Write your note here..." />
+        <article className="sticky-note" style={{ left: note.position.x, top: note.position.y }}>
+            <textarea placeholder="Write your note here..." value={note.textContent} />
         </article>
     )
 }
