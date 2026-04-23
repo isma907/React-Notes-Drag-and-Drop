@@ -4,7 +4,7 @@
 
 .sticky-note-drag-handler {
     height: 20px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.5);
     cursor: grab;
 }
 
@@ -12,7 +12,7 @@
     cursor: grabbing;
 }
 
-.sticky-note .sticky-note_text-content {
+.sticky-note_text-content {
     appearance: none;
     background: transparent;
     color: var(--text);
@@ -33,10 +33,16 @@
     font-size: 1.2rem;
     overflow: auto;
     display: block;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
 }
 
 .sticky-note_text-content::placeholder {
     color: var(--text);
+    opacity: 1;
+}
+
+.sticky-note:hover .sticky-note-resize-handler {
     opacity: 1;
 }
 
@@ -50,4 +56,6 @@
     border-width: 0 0 20px 20px;
     border-color: transparent transparent #ffffff transparent;
     cursor: se-resize;
+    opacity: 0;
+    transition: ease-in-out 0.2s opacity;
 }
