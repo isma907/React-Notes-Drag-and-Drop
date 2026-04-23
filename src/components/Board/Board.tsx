@@ -5,10 +5,12 @@ import { useNotesStore } from '../../store/useNotes'
 import { useShallow } from 'zustand/react/shallow'
 import { createStickyNote } from '../../utils/stickyNotes.utils'
 import { FaRegTrashCan } from "react-icons/fa6";
+import { BoardProvider } from '../../context/TrashContext';
 
 
 const Board = () => {
     const boardRef = useRef<HTMLDivElement>(null)
+    const trashRef = useRef<HTMLDivElement>(null)
     const addNote = useNotesStore((state) => state.addNote);
 
 
@@ -31,15 +33,17 @@ const Board = () => {
     }
 
     return (
-        <section className="board" ref={boardRef}
-            onDoubleClick={handleAddNote}>
-            <div className='trash-item'>
-                <FaRegTrashCan />
-            </div>
-            {noteIds.map((id) => (
-                <StickyNote key={id} id={id} />
-            ))}
-        </section>
+        <BoardProvider trashRef={trashRef}>
+            <section className="board" ref={boardRef}
+                onDoubleClick={handleAddNote}>
+                <div className='trash-item' ref={trashRef}>
+                    <FaRegTrashCan />
+                </div>
+                {noteIds.map((id) => (
+                    <StickyNote key={id} id={id} />
+                ))}
+            </section>
+        </BoardProvider>
     )
 }
 
