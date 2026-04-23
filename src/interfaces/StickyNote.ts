@@ -3,7 +3,7 @@ export interface StickyNote {
     textContent: string;
     backgroundColor: string;
     position: StickyNotePosition,
-    size?: SticyNoteSize;
+    size?: StickyNoteSize;
 }
 
 export interface StickyNotePosition {
@@ -11,7 +11,7 @@ export interface StickyNotePosition {
     y: number;
 }
 
-export interface SticyNoteSize {
+export interface StickyNoteSize {
     width: number;
     height: number;
 }
