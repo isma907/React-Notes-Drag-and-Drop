@@ -4,6 +4,7 @@
   width: 100%;
   height: 100vh;
   position: relative;
+  cursor: cell;
 }
 
 .trash-item {
@@ -14,4 +15,5 @@
   align-items: center;
   justify-content: center;
   background: var(--trash-bg);
+  cursor: initial
 }
