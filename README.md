@@ -1,73 +1,39 @@
-# React + TypeScript + Vite
+# Sticky Notes Drag and Drop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance Sticky Notes application built with React, TypeScript, and Zustand.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[https://isma907.github.io/React-Notes-Drag-and-Drop/](https://isma907.github.io/React-Notes-Drag-and-Drop/)
 
-## React Compiler
+## 📝 How to use
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Create Notes**: Double-click anywhere on the empty board to generate a new sticky note.
+- **Edit Content**: Click on any note to edit its text content. Changes are saved automatically.
+- **Drag & Drop**: Move notes around the board by dragging them from the top handler.
+- **Resize**: Adjust the size of your notes by dragging the bottom-right corner.
+- **Stacking Order**: Interacting with a note (drag/resize) automatically brings it to the front.
+- **Delete**: Drag a sticky note into the trash can icon at the top to delete it.
+- **Persistence**: Your notes are saved locally in your browser, so they persist across sessions.
 
-## Expanding the ESLint configuration
+## ⚡ Performance Optimizations
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Zustand Selectors**: Components only subscribe to the specific data they need.
+- **Memoization**: Key components like `StickyNote` are wrapped in `React.memo`.
+- **Z-Index Management**: Stacking order is handled individually via the store to avoid re-rendering the entire board.
+- **DOM Manipulation**: Drag and resize operations use direct DOM manipulation for maximum smoothness, only syncing with React state when the interaction ends.
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+## 📦 Installation & Build
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+2. **Run development server**:
+   ```bash
+   npm run dev
+   ```
+3. **Run tests**:
+   ```bash
+   npm run test
+   ```
