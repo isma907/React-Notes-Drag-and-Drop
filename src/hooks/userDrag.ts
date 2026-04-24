@@ -92,11 +92,9 @@ export function useDrag(
         noteRect.top < trashRect.bottom &&
         noteRect.bottom > trashRect.top;
 
-      //Detect collision with Trash zone
       if (isOverTrash) {
         noteRef.current.style.left = `${initialPosition.current.x}px`;
         noteRef.current.style.top = `${initialPosition.current.y}px`;
-        updateNote(id, { position: initialPosition.current });
         setPendingDeleteNoteId(note.id);
         return;
       }
