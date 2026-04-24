@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, memo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import StickyNote from "../StickyNote/StickyNote";
 import "./Board.css";
@@ -12,10 +12,6 @@ const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
   const addNote = useNotesStore((state) => state.addNote);
-
-  const notes = useNotesStore(
-    useShallow((s) => s.notes.map((note) => note.id)),
-  );
 
   /**
     / Create a new note on doubleClicking in an empty space on the board
@@ -40,14 +36,21 @@ const Board = () => {
         <div className="trash-item" ref={trashRef}>
           <FaRegTrashCan />
         </div>
-
-        {notes.map((id) => (
-          <StickyNote key={id} id={id} />
-        ))}
+        <NotesList />
       </section>
       <DeleteNoteModal />
     </BoardProvider>
   );
 };
-
 export default Board;
+
+const NotesList = memo(() => {
+  const notes = useNotesStore(useShallow((s) => s.notes));
+  return (
+    <>
+      {notes.map((note) => (
+        <StickyNote key={note.id} id={note.id} />
+      ))}
+    </>
+  );
+});
