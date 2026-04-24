@@ -15,5 +15,5 @@
   align-items: center;
   justify-content: center;
   background: var(--trash-bg);
-  cursor: initial
+  cursor: initial;
 }

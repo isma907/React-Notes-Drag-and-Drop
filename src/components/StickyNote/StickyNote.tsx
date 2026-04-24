@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from "react";
 import { useNotesStore } from "../../store/useNotes";
-import "./StickyNote.css";
 import { useDrag } from "../../hooks/userDrag";
 import { useResize } from "../../hooks/useResize";
 import { useBoardContext } from "../../context/boardContext";
-import { RiDraggable } from "react-icons/ri";
+import { GripHorizontal } from "lucide-react";
+import "./StickyNote.css";
 
 const StickyNote = ({ id }: { id: string }) => {
   const note = useNotesStore((s) => s.notes.find((note) => note.id === id));
@@ -59,7 +59,7 @@ const StickyNote = ({ id }: { id: string }) => {
         onPointerUp={onDropNote}
       >
         <span className="sticky-note-drag-handler-icon">
-          <RiDraggable />
+          <GripHorizontal />
         </span>
       </div>
       <textarea

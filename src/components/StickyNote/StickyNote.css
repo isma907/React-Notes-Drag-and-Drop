@@ -13,16 +13,15 @@
   transition: var(--basic-transition);
 }
 
-.sticky-note-drag-handler:hover{
+.sticky-note-drag-handler:hover {
   opacity: 1;
 }
 
-.sticky-note:hover .sticky-note-drag-handler{
+.sticky-note:hover .sticky-note-drag-handler {
   opacity: 1;
 }
 
-.sticky-note-drag-handler-icon{
-  transform: rotate(90deg);
+.sticky-note-drag-handler-icon {
   display: flex;
 }
 
