@@ -38,6 +38,8 @@ export function useResize(
         h: note?.size?.height ?? STICKY_NOTE_MIN_HEIGHT,
       };
 
+      // Capture the pointer so movement is detected even if it leaves the Note
+      e.currentTarget.setPointerCapture(e.pointerId);
       e.stopPropagation();
     },
     [bringToFront, id],
@@ -70,26 +72,32 @@ export function useResize(
   /**
    * Executed when user stops resizing the Note (drop resize handler)
    */
-  const onResizeNoteEnd = useCallback(() => {
-    if (!resizing.current || !noteRef.current) return;
-    resizing.current = false;
+  const onResizeNoteEnd = useCallback(
+    (e: React.PointerEvent) => {
+      if (!resizing.current || !noteRef.current) return;
+      resizing.current = false;
+      e.currentTarget.releasePointerCapture(e.pointerId);
 
-    // Get the final size of the DOM element
-    const rect = noteRef.current.getBoundingClientRect();
-    const note = useNotesStore.getState().notes.find((note) => note.id === id);
+      // Get the final size of the DOM element
+      const rect = noteRef.current.getBoundingClientRect();
+      const note = useNotesStore
+        .getState()
+        .notes.find((note) => note.id === id);
 
-    if (!note) return;
+      if (!note) return;
 
-    const width = Math.round(rect.width);
-    const height = Math.round(rect.height);
+      const width = Math.round(rect.width);
+      const height = Math.round(rect.height);
 
-    // update only if size has changed
-    if (note?.size?.width !== width || note?.size?.height !== height) {
-      updateNote(id, {
-        size: { width, height },
-      });
-    }
-  }, [id, updateNote, noteRef]);
+      // update only if size has changed
+      if (note?.size?.width !== width || note?.size?.height !== height) {
+        updateNote(id, {
+          size: { width, height },
+        });
+      }
+    },
+    [id, updateNote, noteRef],
+  );
 
   return { onStartResizeNote, onResizeNote, onResizeNoteEnd };
 }
