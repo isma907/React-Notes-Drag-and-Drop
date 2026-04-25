@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import { useNotesStore } from "../../store/useNotes";
-import { useDrag } from "../../hooks/userDrag";
+import { useDrag } from "../../hooks/useDrag";
 import { useResize } from "../../hooks/useResize";
 import { useBoardContext } from "../../context/boardContext";
 import { GripHorizontal } from "lucide-react";
