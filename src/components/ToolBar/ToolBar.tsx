@@ -37,9 +37,12 @@ export const ToolBar = () => {
     <section className="toolbar">
       <div>
         <div className="toolbar-slidecontainer">
-          <label className="toolbar-label">Width: {width}px</label>
+          <label htmlFor="width" className="toolbar-label">
+            Width: {width}px
+          </label>
           <input
             type="range"
+            id="width"
             min={STICKY_NOTE_MIN_WIDTH}
             max={STICKY_NOTE_MAX_WIDTH}
             className="toolbar-slider"
@@ -49,9 +52,12 @@ export const ToolBar = () => {
         </div>
 
         <div className="toolbar-slidecontainer">
-          <label className="toolbar-label">Height: {height}px</label>
+          <label htmlFor="height" className="toolbar-label">
+            Height: {height}px
+          </label>
           <input
             type="range"
+            id="height"
             min={STICKY_NOTE_MIN_HEIGHT}
             max={STICKY_NOTE_MAX_HEIGHT}
             className="toolbar-slider"
