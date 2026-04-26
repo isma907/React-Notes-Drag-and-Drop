@@ -1,8 +1,8 @@
-import {
-  STICKY_NOTE_MIN_HEIGHT,
-  STICKY_NOTE_MIN_WIDTH,
-} from "../constants/stickyNotes.constants";
-import type { StickyNote, StickyNotePosition } from "../interfaces/StickyNote";
+import type {
+  StickyNote,
+  StickyNotePosition,
+  StickyNoteSize,
+} from "../interfaces/StickyNote";
 
 export const generateColor = (): string => {
   const color = Math.floor(Math.random() * 0xffffff)
@@ -13,18 +13,16 @@ export const generateColor = (): string => {
 };
 
 export const createStickyNote = (
+  size: StickyNoteSize,
   position: StickyNotePosition,
   zIndex: number,
 ): StickyNote => {
   return {
     id: crypto.randomUUID(),
+    backgroundColor: generateColor(),
     textContent: "",
     position,
-    backgroundColor: generateColor(),
+    size,
     zIndex,
-    size: {
-      width: STICKY_NOTE_MIN_WIDTH,
-      height: STICKY_NOTE_MIN_HEIGHT,
-    },
   };
 };

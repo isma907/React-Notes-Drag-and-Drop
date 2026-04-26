@@ -1,2 +1,5 @@
 export const STICKY_NOTE_MIN_WIDTH = 200;
+export const STICKY_NOTE_MAX_WIDTH = 400;
+
 export const STICKY_NOTE_MIN_HEIGHT = 200;
+export const STICKY_NOTE_MAX_HEIGHT = 500;

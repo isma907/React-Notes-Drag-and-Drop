@@ -2,16 +2,16 @@ import { useCallback, useRef, memo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import StickyNote from "../StickyNote/StickyNote";
 import { useNotesStore } from "../../store/useNotes";
-import { createStickyNote } from "../../utils/stickyNotes.utils";
 import { Trash2 } from "lucide-react";
 import { BoardProvider } from "../../context/BoardProvider";
 import DeleteNoteModal from "../DeleteNoteModal/DeleteNoteModal";
 import "./Board.css";
+import { ToolBar } from "../ToolBar/ToolBar";
 
 const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
-  const addNote = useNotesStore((state) => state.addNote);
+  const createNote = useNotesStore((state) => state.createNote);
 
   /**
   / Create a new note on doubleClicking in an empty space on the board
@@ -22,12 +22,9 @@ const Board = () => {
       const rect = boardRef.current?.getBoundingClientRect();
       const x = e.clientX - (rect?.left || 0);
       const y = e.clientY - (rect?.top || 0);
-
-      const { lastZIndex } = useNotesStore.getState();
-      const newStickyNote = createStickyNote({ x, y }, lastZIndex + 1);
-      addNote(newStickyNote);
+      createNote({ x, y });
     },
-    [addNote],
+    [createNote],
   );
 
   return (
@@ -37,6 +34,7 @@ const Board = () => {
           <Trash2 size={60} />
         </div>
         <NotesList />
+        <ToolBar />
       </section>
       <DeleteNoteModal />
     </BoardProvider>

@@ -1,11 +1,23 @@
 import { devtools, persist } from "zustand/middleware";
-import type { StickyNote } from "../interfaces/StickyNote";
+import type {
+  StickyNote,
+  StickyNotePosition,
+  StickyNoteSize,
+} from "../interfaces/StickyNote";
 import { create } from "zustand";
+import {
+  STICKY_NOTE_MIN_WIDTH,
+  STICKY_NOTE_MIN_HEIGHT,
+} from "../constants/stickyNotes.constants";
+import { createStickyNote } from "../utils/stickyNotes.utils";
 
 type NotesState = {
   notes: StickyNote[];
+  createNote: (position: StickyNotePosition) => void;
+  toolbarConfig: StickyNoteSize;
+  updateToolbarConfig: (updates: Partial<StickyNoteSize>) => void;
+
   lastZIndex: number;
-  addNote: (note: StickyNote) => void;
   removeNote: (id: string) => void;
   updateNote: (id: string, updates: Partial<StickyNote>) => void;
   bringToFront: (id: string) => void;
@@ -21,17 +33,36 @@ export const useNotesStore = create<NotesState>()(
     persist(
       (set) => ({
         notes: [],
-        deleteNoteId: null,
-        lastZIndex: 0,
-        addNote: (note) =>
+        createNote: (position) => {
           set(
             (state) => ({
-              notes: [...state.notes, note],
-              // Ensure to update lastZIndex on adding new Note
-              lastZIndex: Math.max(state.lastZIndex, note.zIndex),
+              notes: [
+                ...state.notes,
+                createStickyNote(
+                  state.toolbarConfig,
+                  position,
+                  state.lastZIndex + 1,
+                ),
+              ],
+              lastZIndex: state.lastZIndex + 1,
             }),
             false,
-            "[Note] addNote",
+            "[Note] createNote",
+          );
+        },
+        deleteNoteId: null,
+        lastZIndex: 0,
+        toolbarConfig: {
+          width: STICKY_NOTE_MIN_WIDTH,
+          height: STICKY_NOTE_MIN_HEIGHT,
+        },
+        updateToolbarConfig: (updates) =>
+          set(
+            (state) => ({
+              toolbarConfig: { ...state.toolbarConfig, ...updates },
+            }),
+            false,
+            "[Note] updateToolbarConfig",
           ),
         removeNote: (id) =>
           set(
@@ -88,6 +119,7 @@ export const useNotesStore = create<NotesState>()(
         name: "sticky-notes", // Key name in localStorage
         // partialize to avoid saving temporary states on localStorage like pendingDeleteNoteId
         partialize: (state) => ({
+          toolbarConfig: state.toolbarConfig,
           notes: state.notes,
           lastZIndex: state.lastZIndex,
         }),
