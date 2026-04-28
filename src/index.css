@@ -3,10 +3,8 @@
   --board-min-width: 1024px;
   --board-min-height: 768px;
 
-  --modal-bg: #333;
-  --modal-backdrop: rgba(0, 0, 0, 0.35);
-  --modal-border-radius: 0.3rem;
-  --modal-btn-bg: #fff;
+  --toast-text: #fff;
+  --toast-bg: #333;
 
   --font-size-normal: 1.2rem;
   --info-text-color: #aaa;
@@ -15,9 +13,12 @@
   --note-resize-handler-bg: #ffffff;
   --note-drag-handler-bg: rgba(0, 0, 0, 0.5);
   --note-drag-handler-height: 1.25rem;
+  --note-delete-bg: #666;
 
   --trash-bg: #ff2225;
-  --basic-transition: ease-in-out 0.2s opacity;
+  --trash-shadow: 0 4px 12px #ff2225;
+
+  --basic-transition: all 0.2s ease-in-out;
 
   --bg: #16171d;
   --toobar-bg: #111216;

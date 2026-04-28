@@ -4,7 +4,7 @@ import StickyNote from "../StickyNote/StickyNote";
 import { useNotesStore } from "../../store/useNotes";
 import { Trash2 } from "lucide-react";
 import { BoardProvider } from "../../context/BoardProvider";
-import DeleteNoteModal from "../DeleteNoteModal/DeleteNoteModal";
+import { UndoToast } from "../UndoToast/UndoToast";
 import "./Board.css";
 import { ToolBar } from "../ToolBar/ToolBar";
 
@@ -12,23 +12,35 @@ const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
   const createNote = useNotesStore((state) => state.createNote);
+  const toolbarConfig = useNotesStore((state) => state.toolbarConfig);
 
   /**
-  / Create a new note on doubleClicking in an empty space on the board
-  */
+   * Create a new note on double clicking in an empty space on the board.
+   */
   const handleAddNote = useCallback(
     (e: React.MouseEvent) => {
-      if (e.target !== e.currentTarget) return;
-      const rect = boardRef.current?.getBoundingClientRect();
-      const x = e.clientX - (rect?.left || 0);
-      const y = e.clientY - (rect?.top || 0);
+      if (e.target !== e.currentTarget || !boardRef.current) return;
+
+      const rect = boardRef.current.getBoundingClientRect();
+      
+      // Calculate x and y such that the click is the center of the note
+      let x = e.clientX - rect.left - (toolbarConfig.width / 2);
+      let y = e.clientY - rect.top - (toolbarConfig.height / 2);
+
+      // Bound coordinates so the new note doesn't overflow the board
+      const maxX = Math.max(0, rect.width - toolbarConfig.width);
+      const maxY = Math.max(0, rect.height - toolbarConfig.height);
+
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+
       createNote({ x, y });
     },
-    [createNote],
+    [createNote, toolbarConfig],
   );
 
   return (
-    <BoardProvider trashRef={trashRef}>
+    <BoardProvider trashRef={trashRef} boardRef={boardRef}>
       <section className="board" ref={boardRef} onDoubleClick={handleAddNote}>
         <div className="trash-item" ref={trashRef}>
           <Trash2 size={60} />
@@ -36,18 +48,18 @@ const Board = () => {
         <NotesList />
         <ToolBar />
       </section>
-      <DeleteNoteModal />
+      <UndoToast />
     </BoardProvider>
   );
 };
 export default Board;
 
 const NotesList = memo(() => {
-  const notes = useNotesStore(useShallow((s) => s.notes));
+  const noteIds = useNotesStore(useShallow((s) => Object.keys(s.notes)));
   return (
     <>
-      {notes.map((note) => (
-        <StickyNote key={note.id} id={note.id} />
+      {noteIds.map((id) => (
+        <StickyNote key={id} id={id} />
       ))}
     </>
   );

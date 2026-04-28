@@ -3,7 +3,15 @@ import Board from "./Board";
 import { useNotesStore } from "../../store/useNotes";
 
 describe("Board integration", () => {
-  beforeEach(() => {});
+  beforeEach(() => {
+    useNotesStore.setState({
+      notes: {},
+      lastZIndex: 0,
+      toolbarConfig: { width: 200, height: 200 },
+      lastDeletedNote: null,
+    });
+    localStorage.clear();
+  });
 
   it("loads the app with no notes", () => {
     render(<Board />);
@@ -36,12 +44,12 @@ describe("Board integration", () => {
     fireEvent.doubleClick(board!, { clientX: 110, clientY: 220 });
 
     const { notes } = useNotesStore.getState();
-    expect(notes.length).toBe(1);
+    expect(Object.keys(notes).length).toBe(1);
     expect(
       screen.getByPlaceholderText("Write your note here..."),
     ).toBeVisible();
 
-    const note = notes[0];
-    expect(note.position).toEqual({ x: 100, y: 200 });
+    const note = Object.values(notes)[0];
+    expect(note.position).toEqual({ x: 0, y: 100 });
   });
 });

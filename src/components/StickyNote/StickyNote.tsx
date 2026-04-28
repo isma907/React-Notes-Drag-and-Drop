@@ -7,14 +7,15 @@ import { GripHorizontal } from "lucide-react";
 import "./StickyNote.css";
 
 const StickyNote = ({ id }: { id: string }) => {
-  const note = useNotesStore((s) => s.notes.find((note) => note.id === id));
+  const note = useNotesStore((s) => s.notes[id]);
   const noteRef = useRef<HTMLDivElement>(null);
-  const { trashRef } = use(BoardContext)!;
+  const { trashRef, boardRef } = use(BoardContext)!;
 
   const { onStartDragNote, onDragNote, onDropNote } = useDrag(
     id,
     noteRef,
     trashRef,
+    boardRef,
   );
   const { onStartResizeNote, onResizeNote, onResizeNoteEnd } = useResize(
     id,
@@ -24,20 +25,27 @@ const StickyNote = ({ id }: { id: string }) => {
   const updateNote = useNotesStore((s) => s.updateNote);
   const [noteValue, setNoteValue] = useState(note?.textContent ?? "");
 
-  const handleUpdateText = useCallback(() => {
-    const current =
-      useNotesStore.getState().notes.find((note) => note.id === id)
-        ?.textContent ?? "";
+  const handleFocus = useCallback(() => {
+    setNoteValue(note?.textContent ?? "");
+  }, [note]);
 
-    //Update store only if there is a change in the content
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setNoteValue(e.target.value);
+    },
+    [],
+  );
+
+  const handleUpdateText = useCallback(() => {
+    const current = useNotesStore.getState().notes[id]?.textContent ?? "";
+
+    // Update store only if there is a change in the content.
     if (noteValue !== current) {
       updateNote(id, { textContent: noteValue });
     }
   }, [id, noteValue, updateNote]);
 
-  if (!note) {
-    return null;
-  }
+  if (!note) return null;
 
   return (
     <article
@@ -45,8 +53,7 @@ const StickyNote = ({ id }: { id: string }) => {
       style={{
         width: note.size?.width,
         height: note.size?.height,
-        left: note.position.x,
-        top: note.position.y,
+        transform: `translate(${note.position.x}px, ${note.position.y}px)`,
         backgroundColor: note.backgroundColor,
         zIndex: note.zIndex,
       }}
@@ -66,7 +73,8 @@ const StickyNote = ({ id }: { id: string }) => {
         className="sticky-note_text-content"
         placeholder="Write your note here..."
         value={noteValue}
-        onChange={(e) => setNoteValue(e.target.value)}
+        onFocus={handleFocus}
+        onChange={handleChange}
         onBlur={handleUpdateText}
       />
 
@@ -75,7 +83,7 @@ const StickyNote = ({ id }: { id: string }) => {
         onPointerDown={onStartResizeNote}
         onPointerMove={onResizeNote}
         onPointerUp={onResizeNoteEnd}
-      ></div>
+      />
     </article>
   );
 };

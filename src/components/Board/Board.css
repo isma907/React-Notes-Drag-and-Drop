@@ -16,4 +16,11 @@
   justify-content: center;
   background: var(--trash-bg);
   cursor: initial;
+  transition: var(--basic-transition);
+}
+
+.trash-item.trash-active {
+  transform: scale(1.1);
+  color: white;
+  box-shadow: var(--trash-shadow);
 }

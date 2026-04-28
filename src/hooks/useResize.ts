@@ -23,9 +23,7 @@ export function useResize(
   const onStartResizeNote = useCallback(
     (e: React.PointerEvent) => {
       if (e.button !== 0) return; // pressed left click only
-      const note = useNotesStore
-        .getState()
-        .notes.find((note) => note.id === id);
+      const note = useNotesStore.getState().notes[id];
 
       if (!note) return;
 
@@ -53,7 +51,7 @@ export function useResize(
     (e: React.PointerEvent) => {
       if (!resizing.current || !noteRef.current) return;
 
-      //Check with minHeight and minWidth to avoid resizing too small
+      // Check with minHeight and minWidth to avoid resizing too small.
       const width = Math.max(
         STICKY_NOTE_MIN_WIDTH,
         initialPosition.current.w + (e.clientX - initialPosition.current.x),
@@ -71,7 +69,7 @@ export function useResize(
   );
 
   /**
-   * Executed when user stops resizing the Note (drop resize handler)
+   * Executed when the user stops resizing the Note (drop resize handler).
    */
   const onResizeNoteEnd = useCallback(
     (e: React.PointerEvent) => {
@@ -81,16 +79,14 @@ export function useResize(
 
       // Get the final size of the DOM element
       const rect = noteRef.current.getBoundingClientRect();
-      const note = useNotesStore
-        .getState()
-        .notes.find((note) => note.id === id);
+      const note = useNotesStore.getState().notes[id];
 
       if (!note) return;
 
       const width = Math.round(rect.width);
       const height = Math.round(rect.height);
 
-      // update only if size has changed
+      // Update only if the size has changed.
       if (note?.size?.width !== width || note?.size?.height !== height) {
         updateNote(id, {
           size: { width, height },
