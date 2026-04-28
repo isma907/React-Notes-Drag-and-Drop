@@ -59,7 +59,7 @@ export function useDrag(
       if (e.button !== 0) return;
       if (!noteRef.current) return;
 
-      const note = useNotesStore.getState().notes.find((n) => n.id === id);
+      const note = useNotesStore.getState().notes[id];
 
       if (!note) return;
 
@@ -152,7 +152,7 @@ export function useDrag(
       isDragging.current = false;
       e.currentTarget.releasePointerCapture(e.pointerId);
 
-      const note = useNotesStore.getState().notes.find((n) => n.id === id);
+      const note = useNotesStore.getState().notes[id];
 
       if (!note) return;
       const overTrash = isOverTrash();

@@ -12,7 +12,7 @@ import {
 import { createStickyNote } from "../utils/stickyNotes.utils";
 
 type NotesState = {
-  notes: StickyNote[];
+  notes: Record<string, StickyNote>;
   createNote: (position: StickyNotePosition) => void;
   toolbarConfig: StickyNoteSize;
   updateToolbarConfig: (updates: Partial<StickyNoteSize>) => void;
@@ -31,20 +31,20 @@ export const useNotesStore = create<NotesState>()(
   devtools(
     persist(
       (set) => ({
-        notes: [],
+        notes: {},
         createNote: (position) => {
           set(
-            (state) => ({
-              notes: [
-                ...state.notes,
-                createStickyNote(
-                  state.toolbarConfig,
-                  position,
-                  state.lastZIndex + 1,
-                ),
-              ],
-              lastZIndex: state.lastZIndex + 1,
-            }),
+            (state) => {
+              const newNote = createStickyNote(
+                state.toolbarConfig,
+                position,
+                state.lastZIndex + 1,
+              );
+              return {
+                notes: { ...state.notes, [newNote.id]: newNote },
+                lastZIndex: state.lastZIndex + 1,
+              };
+            },
             false,
             "[Note] createNote",
           );
@@ -66,10 +66,15 @@ export const useNotesStore = create<NotesState>()(
         removeNote: (id) =>
           set(
             (state) => {
-              const noteToDelete = state.notes.find((n) => n.id === id);
+              const noteToDelete = state.notes[id];
+              if (!noteToDelete) return state;
+              
+              const newNotes = { ...state.notes };
+              delete newNotes[id];
+              
               return {
-                notes: state.notes.filter((note) => note.id !== id),
-                lastDeletedNote: noteToDelete || null,
+                notes: newNotes,
+                lastDeletedNote: noteToDelete,
               };
             },
             false,
@@ -80,7 +85,7 @@ export const useNotesStore = create<NotesState>()(
             (state) => {
               if (!state.lastDeletedNote) return state;
               return {
-                notes: [...state.notes, state.lastDeletedNote],
+                notes: { ...state.notes, [state.lastDeletedNote.id]: state.lastDeletedNote },
                 lastDeletedNote: null,
               };
             },
@@ -92,11 +97,13 @@ export const useNotesStore = create<NotesState>()(
         updateNote: (id, updates) =>
           set(
             (state) => {
-              const index = state.notes.findIndex((n) => n.id === id);
-              if (index === -1) return state;
-              const newNotes = [...state.notes];
-              newNotes[index] = { ...newNotes[index], ...updates };
-              return { notes: newNotes };
+              if (!state.notes[id]) return state;
+              return {
+                notes: {
+                  ...state.notes,
+                  [id]: { ...state.notes[id], ...updates },
+                },
+              };
             },
             false,
             "[Note] updateNote",
@@ -105,13 +112,13 @@ export const useNotesStore = create<NotesState>()(
         bringToFront: (id) =>
           set(
             (state) => {
-              const index = state.notes.findIndex((n) => n.id === id);
-              if (index === -1) return state;
+              if (!state.notes[id]) return state;
               const newZIndex = state.lastZIndex + 1;
-              const newNotes = [...state.notes];
-              newNotes[index] = { ...newNotes[index], zIndex: newZIndex };
               return {
-                notes: newNotes,
+                notes: {
+                  ...state.notes,
+                  [id]: { ...state.notes[id], zIndex: newZIndex },
+                },
                 lastZIndex: newZIndex,
               };
             },

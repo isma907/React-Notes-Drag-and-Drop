@@ -7,7 +7,7 @@ import { GripHorizontal } from "lucide-react";
 import "./StickyNote.css";
 
 const StickyNote = ({ id }: { id: string }) => {
-  const note = useNotesStore((s) => s.notes.find((note) => note.id === id));
+  const note = useNotesStore((s) => s.notes[id]);
   const noteRef = useRef<HTMLDivElement>(null);
   const { trashRef, boardRef } = use(BoardContext)!;
 
@@ -37,9 +37,7 @@ const StickyNote = ({ id }: { id: string }) => {
   );
 
   const handleUpdateText = useCallback(() => {
-    const current =
-      useNotesStore.getState().notes.find((note) => note.id === id)
-        ?.textContent ?? "";
+    const current = useNotesStore.getState().notes[id]?.textContent ?? "";
 
     //Update store only if there is a change in the content
     if (noteValue !== current) {

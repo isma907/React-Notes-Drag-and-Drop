@@ -43,11 +43,11 @@ const Board = () => {
 export default Board;
 
 const NotesList = memo(() => {
-  const notes = useNotesStore(useShallow((s) => s.notes));
+  const noteIds = useNotesStore(useShallow((s) => Object.keys(s.notes)));
   return (
     <>
-      {notes.map((note) => (
-        <StickyNote key={note.id} id={note.id} />
+      {noteIds.map((id) => (
+        <StickyNote key={id} id={id} />
       ))}
     </>
   );
