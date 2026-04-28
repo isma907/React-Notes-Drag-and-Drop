@@ -4,7 +4,7 @@ import StickyNote from "../StickyNote/StickyNote";
 import { useNotesStore } from "../../store/useNotes";
 import { Trash2 } from "lucide-react";
 import { BoardProvider } from "../../context/BoardProvider";
-import DeleteNoteModal from "../DeleteNoteModal/DeleteNoteModal";
+import { UndoToast } from "../UndoToast/UndoToast";
 import "./Board.css";
 import { ToolBar } from "../ToolBar/ToolBar";
 
@@ -28,7 +28,7 @@ const Board = () => {
   );
 
   return (
-    <BoardProvider trashRef={trashRef}>
+    <BoardProvider trashRef={trashRef} boardRef={boardRef}>
       <section className="board" ref={boardRef} onDoubleClick={handleAddNote}>
         <div className="trash-item" ref={trashRef}>
           <Trash2 size={60} />
@@ -36,7 +36,7 @@ const Board = () => {
         <NotesList />
         <ToolBar />
       </section>
-      <DeleteNoteModal />
+      <UndoToast />
     </BoardProvider>
   );
 };

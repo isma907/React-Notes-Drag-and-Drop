@@ -3,10 +3,8 @@
   --board-min-width: 1024px;
   --board-min-height: 768px;
 
-  --modal-bg: #333;
-  --modal-backdrop: rgba(0, 0, 0, 0.35);
-  --modal-border-radius: 0.3rem;
-  --modal-btn-bg: #fff;
+  --toast-text: #fff;
+  --toast-bg: #333;
 
   --font-size-normal: 1.2rem;
   --info-text-color: #aaa;

@@ -1,6 +1,5 @@
 .toolbar {
   width: 20rem;
-  height: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,6 +13,8 @@
   margin: auto;
   z-index: 99999;
   box-shadow: var(--shadow);
+  gap: 1rem;
+  padding: 1rem 0rem;
 }
 
 .toolbar-label {
@@ -25,4 +26,12 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+}
+
+.toolbar-create-btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
 }
