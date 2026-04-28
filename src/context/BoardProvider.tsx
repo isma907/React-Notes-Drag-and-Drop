@@ -7,7 +7,11 @@ interface BoardProviderProps {
   boardRef: RefObject<HTMLDivElement | null>;
 }
 
-export function BoardProvider({ children, trashRef, boardRef }: BoardProviderProps) {
+export function BoardProvider({
+  children,
+  trashRef,
+  boardRef,
+}: BoardProviderProps) {
   const contextValue = useMemo(
     () => ({
       trashRef,

@@ -30,7 +30,7 @@ const StickyNote = ({ id }: { id: string }) => {
     if (note?.textContent !== undefined && note.textContent !== noteValue) {
       setNoteValue(note.textContent);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [note?.textContent]);
 
   const handleUpdateText = useCallback(() => {

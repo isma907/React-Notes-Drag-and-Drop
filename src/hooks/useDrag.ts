@@ -19,20 +19,47 @@ export function useDrag(
   const removeNote = useNotesStore((s) => s.removeNote);
 
   const isDragging = useRef(false);
+  const isDraggingOverTrash = useRef(false);
 
-  const offset = useRef({ x: 0, y: 0 }); // Distance between the cursor and the top-left corner of the Note
-  const position = useRef({ x: 0, y: 0 }); // Current position during drag.
-  const initialPosition = useRef({ x: 0, y: 0 }); // Position before drag starts.
+  const offset = useRef({ x: 0, y: 0 });
+  const position = useRef({ x: 0, y: 0 });
+  const initialPosition = useRef({ x: 0, y: 0 });
+  const noteSize = useRef({ width: 0, height: 0 });
+  const boardSize = useRef({ width: 0, height: 0 });
+
+  const isOverTrash = () => {
+    if (!trashRef.current || !noteRef.current) return false;
+
+    const trashRect = trashRef.current.getBoundingClientRect();
+    const noteRect = noteRef.current.getBoundingClientRect();
+
+    return (
+      noteRect.left < trashRect.right &&
+      noteRect.right > trashRect.left &&
+      noteRect.top < trashRect.bottom &&
+      noteRect.bottom > trashRect.top
+    );
+  };
+
+  const addTrashClasses = () => {
+    trashRef.current?.classList.add("trash-active");
+    noteRef.current?.classList.add("note-over-trash");
+  };
+
+  const removeTrashClasses = () => {
+    trashRef.current?.classList.remove("trash-active");
+    noteRef.current?.classList.remove("note-over-trash");
+  };
 
   /**
    * Executed on pressing the drag handler (Start draging the Note).
    */
   const onStartDragNote = useCallback(
     (e: React.PointerEvent) => {
-      if (e.button !== 0) return; // pressed left click only
-      const note = useNotesStore
-        .getState()
-        .notes.find((note) => note.id === id);
+      if (e.button !== 0) return;
+      if (!noteRef.current) return;
+
+      const note = useNotesStore.getState().notes.find((n) => n.id === id);
 
       if (!note) return;
 
@@ -40,6 +67,20 @@ export function useDrag(
       isDragging.current = true;
 
       // Calculate the offset - (distance between the cursor and the top-left corner of the Note)
+      const noteRect = noteRef.current.getBoundingClientRect();
+      noteSize.current = {
+        width: noteRect.width,
+        height: noteRect.height,
+      };
+
+      if (boardRef.current) {
+        const boardRect = boardRef.current.getBoundingClientRect();
+        boardSize.current = {
+          width: boardRect.width,
+          height: boardRect.height,
+        };
+      }
+
       offset.current = {
         x: e.clientX - note.position.x,
         y: e.clientY - note.position.y,
@@ -51,7 +92,7 @@ export function useDrag(
       // Capture the pointer so movement is detected even if it leaves the Note
       e.currentTarget.setPointerCapture(e.pointerId);
     },
-    [bringToFront, id],
+    [bringToFront, id, noteRef, boardRef],
   );
 
   /**
@@ -66,11 +107,10 @@ export function useDrag(
       let y = e.clientY - offset.current.y;
 
       // Boundaries enforcement
-      if (boardRef?.current && noteRef.current) {
-        const boardRect = boardRef.current.getBoundingClientRect();
-        const noteRect = noteRef.current.getBoundingClientRect();
-        const maxX = boardRect.width - noteRect.width;
-        const maxY = boardRect.height - noteRect.height;
+      if (boardRef.current) {
+        const maxX = boardSize.current.width - noteSize.current.width;
+        const maxY = boardSize.current.height - noteSize.current.height;
+
         x = Math.max(0, Math.min(x, maxX));
         y = Math.max(0, Math.min(y, maxY));
       }
@@ -80,23 +120,16 @@ export function useDrag(
       // Update the DOM directly using transform for better performance
       noteRef.current.style.transform = `translate(${x}px, ${y}px)`;
 
-      // Visual feedback for trash zone
-      if (trashRef?.current) {
-        const trashRect = trashRef.current.getBoundingClientRect();
-        const noteRect = noteRef.current.getBoundingClientRect();
-        
-        const isOverTrash =
-          noteRect.left < trashRect.right &&
-          noteRect.right > trashRect.left &&
-          noteRect.top < trashRect.bottom &&
-          noteRect.bottom > trashRect.top;
+      // Trash detection for note deletion
+      if (trashRef.current) {
+        const over = isOverTrash();
 
-        if (isOverTrash) {
-          trashRef.current.classList.add("trash-active");
-          noteRef.current.classList.add("note-over-trash");
-        } else {
-          trashRef.current.classList.remove("trash-active");
-          noteRef.current.classList.remove("note-over-trash");
+        if (over && !isDraggingOverTrash.current) {
+          addTrashClasses();
+          isDraggingOverTrash.current = true;
+        } else if (!over && isDraggingOverTrash.current) {
+          removeTrashClasses();
+          isDraggingOverTrash.current = false;
         }
       }
     },
@@ -112,44 +145,29 @@ export function useDrag(
       isDragging.current = false;
       e.currentTarget.releasePointerCapture(e.pointerId);
 
-      const note = useNotesStore.getState().notes.find((note) => note.id === id);
+      const note = useNotesStore.getState().notes.find((n) => n.id === id);
 
       if (!note) return;
+      const overTrash = isOverTrash();
+      removeTrashClasses();
+      isDraggingOverTrash.current = false;
 
-      if (trashRef.current && noteRef.current) {
-        trashRef.current.classList.remove("trash-active");
-        noteRef.current.classList.remove("note-over-trash");
+      if (overTrash) {
+        removeNote(note.id);
+        return;
+      }
 
-        const trashRect = trashRef.current.getBoundingClientRect();
-        const noteRect = noteRef.current.getBoundingClientRect();
+      const hasChanged =
+        note.position.x !== position.current.x ||
+        note.position.y !== position.current.y;
 
-        // Check if we dropped the note into Trash FIRST
-        const isOverTrash =
-          noteRect.left < trashRect.right &&
-          noteRect.right > trashRect.left &&
-          noteRect.top < trashRect.bottom &&
-          noteRect.bottom > trashRect.top;
-
-        if (isOverTrash) {
-          removeNote(note.id);
-          return;
-        }
-
-        // Normal drop - update position only if changed
-        else {
-          const hasChanged =
-            note.position.x !== position.current.x ||
-            note.position.y !== position.current.y;
-
-          if (hasChanged) {
-            updateNote(id, {
-              position: position.current,
-            });
-          }
-        }
+      if (hasChanged) {
+        updateNote(id, {
+          position: position.current,
+        });
       }
     },
-    [id, noteRef, trashRef, removeNote, updateNote],
+    [id, removeNote, updateNote],
   );
 
   return {

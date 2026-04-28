@@ -88,11 +88,7 @@ export const useNotesStore = create<NotesState>()(
             "[Note] restoreNote",
           ),
         clearDeletedNote: () =>
-          set(
-            { lastDeletedNote: null },
-            false,
-            "[Note] clearDeletedNote",
-          ),
+          set({ lastDeletedNote: null }, false, "[Note] clearDeletedNote"),
         updateNote: (id, updates) =>
           set(
             (state) => {
