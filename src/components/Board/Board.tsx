@@ -12,19 +12,29 @@ const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
   const createNote = useNotesStore((state) => state.createNote);
+  const toolbarConfig = useNotesStore((state) => state.toolbarConfig);
 
   /**
    * Create a new note on double clicking in an empty space on the board.
    */
   const handleAddNote = useCallback(
     (e: React.MouseEvent) => {
-      if (e.target !== e.currentTarget) return;
-      const rect = boardRef.current?.getBoundingClientRect();
-      const x = e.clientX - (rect?.left || 0);
-      const y = e.clientY - (rect?.top || 0);
+      if (e.target !== e.currentTarget || !boardRef.current) return;
+      
+      const rect = boardRef.current.getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
+
+      // Bound coordinates so the new note doesn't overflow the board
+      const maxX = Math.max(0, rect.width - toolbarConfig.width);
+      const maxY = Math.max(0, rect.height - toolbarConfig.height);
+
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+
       createNote({ x, y });
     },
-    [createNote],
+    [createNote, toolbarConfig],
   );
 
   return (
