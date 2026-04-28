@@ -50,8 +50,6 @@ describe("Board integration", () => {
     ).toBeVisible();
 
     const note = Object.values(notes)[0];
-    // x = 110 (clientX) - 10 (rect.left) - 100 (half width) = 0
-    // y = 220 (clientY) - 20 (rect.top) - 100 (half height) = 100
     expect(note.position).toEqual({ x: 0, y: 100 });
   });
 });
