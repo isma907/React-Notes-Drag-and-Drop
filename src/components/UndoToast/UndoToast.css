@@ -1,7 +1,7 @@
 .undo-toast {
   position: fixed;
-  top: 0.8rem;
-  left: 6rem;
+  bottom: 10rem;
+  right: 1rem;
   background-color: var(--toast-bg);
   color: var(--toast-text);
   padding: 1rem 1.5rem;
@@ -11,22 +11,21 @@
   gap: 1rem;
   box-shadow: var(--shadow);
   z-index: 9999;
-  animation: slideRight 0.2s ease-out;
+  animation: slideLeft 0.2s ease-out;
 }
 
 .undo-toast-btn {
-  background: transparent;
-  border: 1px solid var(--toast-text);
-  color: var(--toast-text);
+  border: none;
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s;
+  background: var(--button-bg);
 }
 
 .undo-toast-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--button-hover-bg);
 }
 
 .undo-toast-close {
@@ -39,10 +38,10 @@
   line-height: 1;
 }
 
-@keyframes slideRight {
+@keyframes slideLeft {
   from {
     opacity: 0;
-    transform: translate(-100%, 0px);
+    transform: translate(150%, 0px);
   }
   to {
     opacity: 1;

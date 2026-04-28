@@ -1,5 +1,6 @@
 .toolbar {
   width: 20rem;
+  height: 7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +36,10 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  background: var(--button-bg);
+  transition: var(--basic-transition);
+}
+
+.toolbar-create-btn:hover {
+  background: var(--button-hover-bg);
 }
