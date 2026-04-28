@@ -16,6 +16,8 @@
   --note-delete-bg: #666;
 
   --trash-bg: #ff2225;
+  --trash-shadow: 0 4px 12px #ff2225;
+
   --basic-transition: all 0.2s ease-in-out;
 
   --bg: #16171d;

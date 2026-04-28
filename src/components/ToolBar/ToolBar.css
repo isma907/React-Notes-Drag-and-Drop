@@ -15,6 +15,7 @@
   box-shadow: var(--shadow);
   gap: 1rem;
   padding: 1rem 0rem;
+  cursor: initial;
 }
 
 .toolbar-label {

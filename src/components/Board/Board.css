@@ -22,5 +22,5 @@
 .trash-item.trash-active {
   transform: scale(1.1);
   color: white;
-  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.4);
+  box-shadow: var(--trash-shadow);
 }
