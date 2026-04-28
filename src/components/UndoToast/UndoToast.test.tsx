@@ -57,7 +57,7 @@ describe("UndoToast", () => {
     });
 
     render(<UndoToast />);
-    
+
     act(() => {
       vi.advanceTimersByTime(5000);
     });

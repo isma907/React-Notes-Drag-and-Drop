@@ -22,10 +22,10 @@ const Board = () => {
       if (e.target !== e.currentTarget || !boardRef.current) return;
 
       const rect = boardRef.current.getBoundingClientRect();
-      
+
       // Calculate x and y such that the click is the center of the note
-      let x = e.clientX - rect.left - (toolbarConfig.width / 2);
-      let y = e.clientY - rect.top - (toolbarConfig.height / 2);
+      let x = e.clientX - rect.left - toolbarConfig.width / 2;
+      let y = e.clientY - rect.top - toolbarConfig.height / 2;
 
       // Bound coordinates so the new note doesn't overflow the board
       const maxX = Math.max(0, rect.width - toolbarConfig.width);

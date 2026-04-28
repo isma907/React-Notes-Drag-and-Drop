@@ -3,6 +3,7 @@
 A professional, senior-level Sticky Notes application built with **React**, **TypeScript**, and **Zustand**, focusing on extreme performance and scalable architecture.
 
 ## 🚀 Live Demo
+
 [https://isma907.github.io/React-Notes-Drag-and-Drop/](https://isma907.github.io/React-Notes-Drag-and-Drop/)
 
 ---
