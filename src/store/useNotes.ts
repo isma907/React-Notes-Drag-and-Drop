@@ -130,7 +130,7 @@ export const useNotesStore = create<NotesState>()(
           ),
       }),
       {
-        name: "sticky-notes", // Key name in localStorage
+        name: "sticky-notes-store", // Key name in localStorage
         // partialize to avoid saving temporary states on localStorage
         partialize: (state) => ({
           toolbarConfig: state.toolbarConfig,
