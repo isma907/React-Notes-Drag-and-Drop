@@ -39,7 +39,7 @@ const StickyNote = ({ id }: { id: string }) => {
   const handleUpdateText = useCallback(() => {
     const current = useNotesStore.getState().notes[id]?.textContent ?? "";
 
-    //Update store only if there is a change in the content
+    // Update store only if there is a change in the content.
     if (noteValue !== current) {
       updateNote(id, { textContent: noteValue });
     }

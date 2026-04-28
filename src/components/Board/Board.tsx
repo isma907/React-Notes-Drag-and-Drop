@@ -14,8 +14,8 @@ const Board = () => {
   const createNote = useNotesStore((state) => state.createNote);
 
   /**
-  / Create a new note on doubleClicking in an empty space on the board
-  */
+   * Create a new note on double clicking in an empty space on the board.
+   */
   const handleAddNote = useCallback(
     (e: React.MouseEvent) => {
       if (e.target !== e.currentTarget) return;

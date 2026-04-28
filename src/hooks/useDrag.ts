@@ -2,7 +2,7 @@ import { useRef, useCallback } from "react";
 import { useNotesStore } from "../store/useNotes";
 
 /**
- * Custom hook to handle the drag&drop logic of a Note.
+ * Custom hook to handle the drag and drop logic of a Note.
  * @param id - The unique ID of the Note.
  * @param noteRef - Reference to the Note DOM element.
  * @param trashRef - Reference to the Trash DOM element (to detect collision).
@@ -52,7 +52,7 @@ export function useDrag(
   }, [trashRef, noteRef]);
 
   /**
-   * Executed on pressing the drag handler (Start draging the Note).
+   * Executed on pressing the drag handler (Start dragging the Note).
    */
   const onStartDragNote = useCallback(
     (e: React.PointerEvent) => {
@@ -144,7 +144,7 @@ export function useDrag(
   );
 
   /**
-   * Executed on releasing the mouse after dragging (Droping the Note).
+   * Executed on releasing the mouse after dragging (Dropping the Note).
    */
   const onDropNote = useCallback(
     (e: React.PointerEvent) => {
