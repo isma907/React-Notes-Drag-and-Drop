@@ -8,7 +8,7 @@ describe("useNotesStore", () => {
       notes: {},
       lastZIndex: 0,
       toolbarConfig: { width: 200, height: 200 },
-      lastDeletedNote: null,
+      deletedNotes: {},
     });
   });
 
@@ -56,7 +56,7 @@ describe("useNotesStore", () => {
 
     state = useNotesStore.getState();
     expect(Object.keys(state.notes)).toHaveLength(0);
-    expect(state.lastDeletedNote?.id).toBe(noteId);
+    expect(state.deletedNotes[noteId]).toBeDefined();
   });
 
   it("should restore the last deleted note", () => {
@@ -67,11 +67,11 @@ describe("useNotesStore", () => {
     const noteId = Object.keys(state.notes)[0];
 
     removeNote(noteId);
-    restoreNote();
+    restoreNote(noteId);
 
     state = useNotesStore.getState();
     expect(Object.keys(state.notes)).toHaveLength(1);
     expect(state.notes[noteId]).toBeDefined();
-    expect(state.lastDeletedNote).toBeNull();
+    expect(Object.keys(state.deletedNotes)).toHaveLength(0);
   });
 });

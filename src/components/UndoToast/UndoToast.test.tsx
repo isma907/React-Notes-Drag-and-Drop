@@ -7,7 +7,7 @@ describe("UndoToast", () => {
   beforeEach(() => {
     useNotesStore.setState({
       notes: {},
-      lastDeletedNote: null,
+      deletedNotes: {},
     });
     vi.useFakeTimers();
   });
@@ -16,20 +16,22 @@ describe("UndoToast", () => {
     vi.useRealTimers();
   });
 
-  it("does not render if there is no lastDeletedNote", () => {
+  it("does not render if there is no deletedNotes", () => {
     render(<UndoToast />);
     expect(screen.queryByText("Note deleted")).not.toBeInTheDocument();
   });
 
   it("renders when a note is deleted and handles undo", () => {
     useNotesStore.setState({
-      lastDeletedNote: {
-        id: "123",
-        textContent: "Deleted Note",
-        position: { x: 0, y: 0 },
-        size: { width: 200, height: 200 },
-        backgroundColor: "#fff",
-        zIndex: 1,
+      deletedNotes: {
+        "123": {
+          id: "123",
+          textContent: "Deleted Note",
+          position: { x: 0, y: 0 },
+          size: { width: 200, height: 200 },
+          backgroundColor: "#fff",
+          zIndex: 1,
+        },
       },
     });
 
@@ -41,28 +43,30 @@ describe("UndoToast", () => {
 
     const state = useNotesStore.getState();
     expect(state.notes["123"]).toBeDefined();
-    expect(state.lastDeletedNote).toBeNull();
+    expect(Object.keys(state.deletedNotes)).toHaveLength(0);
   });
 
   it("auto-clears the deleted note after 5 seconds", () => {
     useNotesStore.setState({
-      lastDeletedNote: {
-        id: "123",
-        textContent: "To disappear",
-        position: { x: 0, y: 0 },
-        size: { width: 200, height: 200 },
-        backgroundColor: "#fff",
-        zIndex: 1,
+      deletedNotes: {
+        "123": {
+          id: "123",
+          textContent: "To disappear",
+          position: { x: 0, y: 0 },
+          size: { width: 200, height: 200 },
+          backgroundColor: "#fff",
+          zIndex: 1,
+        },
       },
     });
 
     render(<UndoToast />);
 
     act(() => {
-      vi.advanceTimersByTime(5000);
+      vi.advanceTimersByTime(5300); // 5000ms + 300ms for exit animation
     });
 
     const state = useNotesStore.getState();
-    expect(state.lastDeletedNote).toBeNull();
+    expect(Object.keys(state.deletedNotes)).toHaveLength(0);
   });
 });

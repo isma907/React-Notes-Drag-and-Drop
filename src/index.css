@@ -4,6 +4,7 @@
   --board-min-height: 768px;
 
   --toast-text: #fff;
+  --toast-text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   --toast-bg: #333;
 
   --font-size-normal: 1.2rem;

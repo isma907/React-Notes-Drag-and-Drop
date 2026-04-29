@@ -22,9 +22,9 @@ type NotesState = {
   updateNote: (id: string, updates: Partial<StickyNote>) => void;
   bringToFront: (id: string) => void;
 
-  lastDeletedNote: StickyNote | null;
-  restoreNote: () => void;
-  clearDeletedNote: () => void;
+  deletedNotes: Record<string, StickyNote>;
+  restoreNote: (id: string) => void;
+  clearDeletedNote: (id: string) => void;
 };
 
 export const useNotesStore = create<NotesState>()(
@@ -62,7 +62,7 @@ export const useNotesStore = create<NotesState>()(
             false,
             "[Note] updateToolbarConfig",
           ),
-        lastDeletedNote: null,
+        deletedNotes: {},
         removeNote: (id) =>
           set(
             (state) => {
@@ -74,29 +74,42 @@ export const useNotesStore = create<NotesState>()(
 
               return {
                 notes: newNotes,
-                lastDeletedNote: noteToDelete,
+                deletedNotes: { ...state.deletedNotes, [id]: noteToDelete },
               };
             },
             false,
             "[Note] removeNote",
           ),
-        restoreNote: () =>
+        restoreNote: (id) =>
           set(
             (state) => {
-              if (!state.lastDeletedNote) return state;
+              const noteToRestore = state.deletedNotes[id];
+              if (!noteToRestore) return state;
+
+              const newDeletedNotes = { ...state.deletedNotes };
+              delete newDeletedNotes[id];
+
               return {
                 notes: {
                   ...state.notes,
-                  [state.lastDeletedNote.id]: state.lastDeletedNote,
+                  [id]: noteToRestore,
                 },
-                lastDeletedNote: null,
+                deletedNotes: newDeletedNotes,
               };
             },
             false,
             "[Note] restoreNote",
           ),
-        clearDeletedNote: () =>
-          set({ lastDeletedNote: null }, false, "[Note] clearDeletedNote"),
+        clearDeletedNote: (id) =>
+          set(
+            (state) => {
+              const newDeletedNotes = { ...state.deletedNotes };
+              delete newDeletedNotes[id];
+              return { deletedNotes: newDeletedNotes };
+            },
+            false,
+            "[Note] clearDeletedNote",
+          ),
         updateNote: (id, updates) =>
           set(
             (state) => {
