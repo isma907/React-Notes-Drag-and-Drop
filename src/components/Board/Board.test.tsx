@@ -8,7 +8,7 @@ describe("Board integration", () => {
       notes: {},
       lastZIndex: 0,
       toolbarConfig: { width: 200, height: 200 },
-      lastDeletedNote: null,
+      deletedNotes: {},
     });
     localStorage.clear();
   });
