@@ -1,5 +1,9 @@
 import { useRef, useCallback } from "react";
 import { useNotesStore } from "../store/useNotes";
+import type {
+  StickyNotePosition,
+  StickyNoteSize,
+} from "../interfaces/StickyNote";
 
 /**
  * Custom hook to handle the drag and drop logic of a Note.
@@ -21,11 +25,11 @@ export function useDrag(
   const isDragging = useRef(false);
   const isDraggingOverTrash = useRef(false);
 
-  const offset = useRef({ x: 0, y: 0 });
-  const position = useRef({ x: 0, y: 0 });
-  const initialPosition = useRef({ x: 0, y: 0 });
-  const noteSize = useRef({ width: 0, height: 0 });
-  const boardSize = useRef({ width: 0, height: 0 });
+  const offset = useRef<StickyNotePosition>({ x: 0, y: 0 });
+  const position = useRef<StickyNotePosition>({ x: 0, y: 0 });
+  const initialPosition = useRef<StickyNotePosition>({ x: 0, y: 0 });
+  const noteSize = useRef<StickyNoteSize>({ width: 0, height: 0 });
+  const boardSize = useRef<StickyNoteSize>({ width: 0, height: 0 });
 
   const isOverTrash = useCallback(() => {
     if (!trashRef.current || !noteRef.current) return false;

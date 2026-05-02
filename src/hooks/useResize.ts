@@ -4,6 +4,7 @@ import {
   STICKY_NOTE_MIN_HEIGHT,
   STICKY_NOTE_MIN_WIDTH,
 } from "../constants/stickyNotes.constants";
+import type { StickyNoteRect } from "../interfaces/StickyNote";
 
 /**
  * Custom hook to handle the resizing of a Note.
@@ -18,7 +19,12 @@ export function useResize(
   const bringToFront = useNotesStore((s) => s.bringToFront);
 
   const resizing = useRef(false);
-  const initialPosition = useRef({ x: 0, y: 0, w: 0, h: 0 }); // Initial data when starting to resize
+  const initialPosition = useRef<StickyNoteRect>({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  }); // Initial data when starting to resize
 
   const onStartResizeNote = useCallback(
     (e: React.PointerEvent) => {
@@ -33,8 +39,8 @@ export function useResize(
       initialPosition.current = {
         x: e.clientX,
         y: e.clientY,
-        w: note?.size?.width ?? STICKY_NOTE_MIN_WIDTH,
-        h: note?.size?.height ?? STICKY_NOTE_MIN_HEIGHT,
+        width: note?.size?.width ?? STICKY_NOTE_MIN_WIDTH,
+        height: note?.size?.height ?? STICKY_NOTE_MIN_HEIGHT,
       };
 
       // Capture the pointer so movement is detected even if it leaves the Note
@@ -54,11 +60,12 @@ export function useResize(
       // Check with minHeight and minWidth to avoid resizing too small.
       const width = Math.max(
         STICKY_NOTE_MIN_WIDTH,
-        initialPosition.current.w + (e.clientX - initialPosition.current.x),
+        initialPosition.current.width + (e.clientX - initialPosition.current.x),
       );
       const height = Math.max(
         STICKY_NOTE_MIN_HEIGHT,
-        initialPosition.current.h + (e.clientY - initialPosition.current.y),
+        initialPosition.current.height +
+          (e.clientY - initialPosition.current.y),
       );
 
       // Update the DOM directly for better performance

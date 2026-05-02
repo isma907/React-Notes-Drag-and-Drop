@@ -16,3 +16,10 @@ export interface StickyNoteSize {
   width: number;
   height: number;
 }
+
+export interface StickyNoteRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
