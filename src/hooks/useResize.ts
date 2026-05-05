@@ -91,7 +91,7 @@ export function useResize(
       noteRef.current.style.width = `${width}px`;
       noteRef.current.style.height = `${height}px`;
     },
-    [noteRef],
+    [noteRef, boardRef],
   );
 
   /**

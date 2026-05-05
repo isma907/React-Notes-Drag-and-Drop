@@ -24,7 +24,7 @@ export const ToolBar = () => {
     }, DEBOUNCE_MS);
 
     return () => clearTimeout(id);
-  }, [width, updateToolbarConfig]);
+  }, [width, height, updateToolbarConfig]);
 
 
   const handleCreateNote = () => {

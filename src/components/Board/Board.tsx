@@ -7,12 +7,13 @@ import { BoardProvider } from "../../context/BoardProvider";
 import { UndoToast } from "../UndoToast/UndoToast";
 import "./Board.css";
 import { ToolBar } from "../ToolBar/ToolBar";
-import { useCreate } from "../../hooks/useCreate";
+import { useDragCreate } from "../../hooks/useDragCreate";
 
 const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
-  const { onDragCreate, onDropCreate } = useCreate(boardRef)
+  const dragGuideLinesRef = useRef<HTMLDivElement>(null);
+  const { onDragCreate, onDropCreate, onHoldDragCreate } = useDragCreate(boardRef, dragGuideLinesRef)
   const createNote = useNotesStore((state) => state.createNote);
 
   /**
@@ -48,6 +49,7 @@ const Board = () => {
       <section className="board" ref={boardRef} onDoubleClick={handleAddNote}
         onPointerDown={onDragCreate}
         onPointerUp={onDropCreate}
+        onPointerMove={onHoldDragCreate}
 
       >
         <div className="trash-item" ref={trashRef}>
@@ -55,6 +57,8 @@ const Board = () => {
         </div>
         <NotesList />
         <ToolBar />
+
+        <div ref={dragGuideLinesRef} className="drag-create-guidelines"></div>
       </section>
       <UndoToast />
     </BoardProvider>
