@@ -3,6 +3,7 @@ import type {
   StickyNotePosition,
   StickyNoteSize,
 } from "../interfaces/StickyNote";
+import type { Element as SlateElement } from "slate";
 
 export const generateColor = (): string => {
   const color = Math.floor(Math.random() * 0xffffff)
@@ -20,7 +21,12 @@ export const createStickyNote = (
   return {
     id: crypto.randomUUID(),
     backgroundColor: generateColor(),
-    textContent: "",
+    textContent: [
+      {
+        type: "paragraph",
+        children: [{ text: "" }],
+      } as SlateElement,
+    ],
     position,
     size,
     zIndex,

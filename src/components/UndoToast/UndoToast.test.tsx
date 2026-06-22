@@ -26,7 +26,7 @@ describe("UndoToast", () => {
       deletedNotes: {
         "123": {
           id: "123",
-          textContent: "Deleted Note",
+          textContent: [{ type: "paragraph", children: [{ text: "Deleted Note" }] }],
           position: { x: 0, y: 0 },
           size: { width: 200, height: 200 },
           backgroundColor: "#fff",
@@ -51,7 +51,7 @@ describe("UndoToast", () => {
       deletedNotes: {
         "123": {
           id: "123",
-          textContent: "To disappear",
+          textContent: [{ type: "paragraph", children: [{ text: "To disappear" }] }],
           position: { x: 0, y: 0 },
           size: { width: 200, height: 200 },
           backgroundColor: "#fff",

@@ -75,7 +75,7 @@ export function useResize(
         STICKY_NOTE_MIN_WIDTH,
         Math.min(
           nextWidth,
-          Math.min(widthAvailableOffset, STICKY_NOTE_MAX_WIDTH)
+          widthAvailableOffset
         )
       )
 
@@ -83,7 +83,7 @@ export function useResize(
         STICKY_NOTE_MIN_HEIGHT,
         Math.min(
           nextHeight,
-          Math.min(heightAvailableOffset, STICKY_NOTE_MAX_WIDTH)
+          heightAvailableOffset
         )
       )
 

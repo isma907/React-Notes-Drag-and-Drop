@@ -1,6 +1,10 @@
+import type { Descendant } from "slate";
+
+export type StickyNoteTextContent = string | Descendant[];
+
 export interface StickyNote {
   id: string;
-  textContent: string;
+  textContent: StickyNoteTextContent;
   backgroundColor: string;
   position: StickyNotePosition;
   size?: StickyNoteSize;
