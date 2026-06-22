@@ -13,7 +13,10 @@ import { createStickyNote } from "../utils/stickyNotes.utils";
 
 type NotesState = {
   notes: Record<string, StickyNote>;
-  createNote: (position: StickyNotePosition, dimension?: StickyNoteSize) => void;
+  createNote: (
+    position: StickyNotePosition,
+    dimension?: StickyNoteSize,
+  ) => void;
   toolbarConfig: StickyNoteSize;
   updateToolbarConfig: (updates: Partial<StickyNoteSize>) => void;
 

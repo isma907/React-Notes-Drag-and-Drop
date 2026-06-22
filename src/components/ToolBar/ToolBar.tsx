@@ -26,7 +26,6 @@ export const ToolBar = () => {
     return () => clearTimeout(id);
   }, [width, height, updateToolbarConfig]);
 
-
   const handleCreateNote = () => {
     createNote({
       x: window.innerWidth / 2 - width / 2,

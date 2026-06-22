@@ -1,7 +1,6 @@
 import { useRef, useCallback } from "react";
 import { useNotesStore } from "../store/useNotes";
 import {
-  STICKY_NOTE_MAX_WIDTH,
   STICKY_NOTE_MIN_HEIGHT,
   STICKY_NOTE_MIN_WIDTH,
 } from "../constants/stickyNotes.constants";
@@ -59,33 +58,27 @@ export function useResize(
     (e: React.PointerEvent) => {
       if (!resizing.current || !noteRef.current || !boardRef.current) return;
 
-
       const boardRect = boardRef.current.getBoundingClientRect();
-      const noteRect = noteRef.current.getBoundingClientRect()
+      const noteRect = noteRef.current.getBoundingClientRect();
 
-
-      const nextWidth = initialPosition.current.width + (e.clientX - initialPosition.current.x);
-      const nextHeight = initialPosition.current.height + (e.clientY - initialPosition.current.y);
-
+      const nextWidth =
+        initialPosition.current.width + (e.clientX - initialPosition.current.x);
+      const nextHeight =
+        initialPosition.current.height +
+        (e.clientY - initialPosition.current.y);
 
       const widthAvailableOffset = boardRect.width - noteRect.left;
       const heightAvailableOffset = boardRect.height - noteRect.top;
 
       const width = Math.max(
         STICKY_NOTE_MIN_WIDTH,
-        Math.min(
-          nextWidth,
-          widthAvailableOffset
-        )
-      )
+        Math.min(nextWidth, widthAvailableOffset),
+      );
 
       const height = Math.max(
         STICKY_NOTE_MIN_HEIGHT,
-        Math.min(
-          nextHeight,
-          heightAvailableOffset
-        )
-      )
+        Math.min(nextHeight, heightAvailableOffset),
+      );
 
       // Update the DOM directly for better performance
       noteRef.current.style.width = `${width}px`;

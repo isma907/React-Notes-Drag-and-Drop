@@ -13,7 +13,10 @@ const Board = () => {
   const boardRef = useRef<HTMLDivElement>(null);
   const trashRef = useRef<HTMLDivElement>(null);
   const dragGuideLinesRef = useRef<HTMLDivElement>(null);
-  const { onDragCreate, onDropCreate, onHoldDragCreate } = useDragCreate(boardRef, dragGuideLinesRef)
+  const { onDragCreate, onDropCreate, onHoldDragCreate } = useDragCreate(
+    boardRef,
+    dragGuideLinesRef,
+  );
   const createNote = useNotesStore((state) => state.createNote);
 
   /**
@@ -25,7 +28,7 @@ const Board = () => {
 
       const rect = boardRef.current.getBoundingClientRect();
 
-      const { width, height } = useNotesStore.getState().toolbarConfig
+      const { width, height } = useNotesStore.getState().toolbarConfig;
 
       // Calculate x and y such that the click is the center of the note
       let x = e.clientX - rect.left - width / 2;
@@ -43,14 +46,15 @@ const Board = () => {
     [createNote],
   );
 
-
   return (
     <BoardProvider trashRef={trashRef} boardRef={boardRef}>
-      <section className="board" ref={boardRef} onDoubleClick={handleAddNote}
+      <section
+        className="board"
+        ref={boardRef}
+        onDoubleClick={handleAddNote}
         onPointerDown={onDragCreate}
         onPointerUp={onDropCreate}
         onPointerMove={onHoldDragCreate}
-
       >
         <div className="trash-item" ref={trashRef}>
           <Trash2 size={60} />

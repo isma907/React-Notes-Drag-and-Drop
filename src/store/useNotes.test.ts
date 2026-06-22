@@ -25,7 +25,8 @@ describe("useNotesStore", () => {
     state.updateNote(noteId, { textContent: newValue });
 
     state = useNotesStore.getState();
-    expect(state.notes[noteId].textContent[0].children[0].text).toBe("Hello AI!");
+    const textContent = state.notes[noteId].textContent as any[];
+    expect(textContent[0].children[0].text).toBe("Hello AI!");
   });
 
   it("should bring a note to front", () => {

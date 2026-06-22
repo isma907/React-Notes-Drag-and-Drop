@@ -19,16 +19,16 @@ import {
 } from "lucide-react";
 import "./StickyNote.css";
 import { Editable, Slate, withReact } from "slate-react";
-import { createEditor, Editor, type Descendant, type Element as SlateElement } from "slate";
+import {
+  createEditor,
+  Editor,
+  type Descendant,
+  type Element as SlateElement,
+} from "slate";
 
-const initialValue: Descendant[] = [
-  {
-    type: "paragraph",
-    children: [{ text: "" }],
-  } as SlateElement,
-];
-
-const normalizeTextContent = (content: string | Descendant[] | undefined): Descendant[] => {
+const normalizeTextContent = (
+  content: string | Descendant[] | undefined,
+): Descendant[] => {
   if (Array.isArray(content)) {
     return content;
   }
@@ -82,7 +82,7 @@ const StickyNote = ({ id }: { id: string }) => {
   const { onStartResizeNote, onResizeNote, onResizeNoteEnd } = useResize(
     id,
     noteRef,
-    boardRef
+    boardRef,
   );
 
   const updateNote = useNotesStore((s) => s.updateNote);
@@ -102,21 +102,21 @@ const StickyNote = ({ id }: { id: string }) => {
 
   const toggleMark = useCallback(
     (format: string) => {
-      const isActive = Editor.marks(editor)?.[format];
+      const isActive = (Editor.marks(editor) as Record<string, any>)?.[format];
       if (isActive) {
         Editor.removeMark(editor, format);
       } else {
         Editor.addMark(editor, format, true);
       }
     },
-    [editor]
+    [editor],
   );
 
   const isMarkActive = useCallback(
     (format: string) => {
-      return !!(Editor.marks(editor)?.[format]);
+      return !!(Editor.marks(editor) as Record<string, any>)?.[format];
     },
-    [editor]
+    [editor],
   );
 
   const handleUpdateText = useCallback(() => {
@@ -205,7 +205,11 @@ const StickyNote = ({ id }: { id: string }) => {
         </button>
       </div>
 
-      <Slate editor={editor} initialValue={noteValue} onChange={handleSlateChange}>
+      <Slate
+        editor={editor}
+        initialValue={noteValue}
+        onChange={handleSlateChange}
+      >
         <Editable
           className="sticky-note_text-content"
           onBlur={handleUpdateText}
